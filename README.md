@@ -47,4 +47,4 @@ Projection translates information from a single object to multiple objects.
 
 In Order to allow the modelMapper library work prety fine, the names of the fields must be the same.
 
-![model Entity & Dto](assets/images/ModelMappernames.PNG)
+![model Dto to Entity](assets/images/ModelMapperNames.PNG)
