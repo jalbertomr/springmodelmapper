@@ -9,6 +9,7 @@ import com.bext.model.Customer;
 import com.bext.model.Name;
 import com.bext.model.Order;
 import com.bext.model.OrderDto;
+import org.modelmapper.ValidationException;
 import org.modelmapper.convention.MatchingStrategies;
 
 public class ModelMapperTest {
@@ -60,5 +61,49 @@ public class ModelMapperTest {
 		Assertions.assertEquals(order.getBillingAddress().getCity(), orderDto.getAddressCity());
 		Assertions.assertEquals(order.getCustomer().getName().getFirstName(), orderDto.getCustomerAlternateFirstName());
 		Assertions.assertEquals(order.getBillingAddress().getStreet(), orderDto.getAddressAlternateStreet());
+	}
+
+	@Test
+	public void modelMapper_throwValidateException(){
+		Order order = new Order(new Customer( new Name("Jose Alberto", "Martinez")), new Address("Main Street","CDMX"));
+		ModelMapper modelMapper = new ModelMapper();
+
+		modelMapper.createTypeMap(Order.class, OrderDto.class);
+		try {
+			modelMapper.validate();
+		} catch (RuntimeException ex){
+			Assertions.assertEquals(org.modelmapper.ValidationException.class, ex.getClass());
+		}
+
+	}
+
+	@Test
+	public void modelMapper_NotThrowValidateExceptionByMatchingStrategies(){
+		Order order = new Order(new Customer( new Name("Jose Alberto", "Martinez")), new Address("Main Street","CDMX"));
+		ModelMapper modelMapper = new ModelMapper();
+
+		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
+		modelMapper.validate();
+		OrderDto orderDto = modelMapper.map(order, OrderDto.class);
+
+		Assertions.assertEquals(order.getCustomer().getName().getFirstName(), orderDto.getCustomerFirstName());
+		//...
+	}
+
+	@Test
+	public void modelMapper_NotThrowValidateExceptionByAddMappings(){
+		Order order = new Order(new Customer( new Name("Jose Alberto", "Martinez")), new Address("Main Street","CDMX"));
+		ModelMapper modelMapper = new ModelMapper();
+
+		modelMapper.typeMap(Order.class, OrderDto.class).addMappings(mapper -> {
+			mapper.map( src -> order.getCustomer().getName().getFirstName(), OrderDto::setCustomerAlternateFirstName);
+			mapper.map( src -> order.getBillingAddress().getStreet(), OrderDto::setAddressAlternateStreet);
+		});
+
+		modelMapper.validate();
+		OrderDto orderDto = modelMapper.map(order, OrderDto.class);
+
+		Assertions.assertEquals(order.getCustomer().getName().getFirstName(), orderDto.getCustomerFirstName());
+		//...
 	}
 }

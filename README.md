@@ -2,7 +2,7 @@
 
 ![model Entity & Dto](assets/images/ModelMapper_map.PNG)
 
-###### ModelMapper.map
+###### ModelMapper.map Flattening
 
 The mapping from many entities sources are done automatically to the destination, in this case a Dto.
 
@@ -31,3 +31,10 @@ To add additional mapping to another fields use
 Or alternatively use MatchingStrategy in single line
 
 	    modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);		
+	    
+###### Validating Matching
+
+To check if all the fields have a match use modelMatcher.validate(). if an unmatched exist the org.modelmapper.ValidationException.class
+is thrown.
+
+	    

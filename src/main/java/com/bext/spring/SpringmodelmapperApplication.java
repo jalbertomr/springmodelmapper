@@ -1,6 +1,7 @@
 package com.bext.spring;
 
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeMap;
 import org.modelmapper.convention.MatchingStrategies;
 import org.modelmapper.spi.MatchingStrategy;
 import org.springframework.boot.CommandLineRunner;
@@ -34,6 +35,14 @@ public class SpringmodelmapperApplication implements CommandLineRunner {
 		});*/
 
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
+
+		modelMapper.createTypeMap(Order.class, OrderDto.class);
+		modelMapper.validate();
+		try {
+			modelMapper.validate();
+		} catch (RuntimeException ex) {
+			log.info("Catched Exception: [{}]", ex.getMessage());
+		}
 
 		OrderDto orderDto = modelMapper.map(order, OrderDto.class);
 		log.info("orderDto mapped: {}",orderDto);
