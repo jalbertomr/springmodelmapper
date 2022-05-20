@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 public class OrderDto {
 	private String customerFirstName;
 	private String customerLastName;
-	private String addressStreet;
-	private String addressCity;
+	private String billingAddressStreet;
+	private String billingAddressCity;
 	private String customerAlternateFirstName;
 	private String addressAlternateStreet;
 }

@@ -1,8 +1,12 @@
-#### ModelMapper
+#### ModelMapper Flattening and Projection
 
 ![model Entity & Dto](assets/images/ModelMapper_map.PNG)
 
 ###### ModelMapper.map Flattening
+
+#### Flattening 
+
+Flatenning translates information from multiple object to a single object.
 
 The mapping from many entities sources are done automatically to the destination, in this case a Dto.
 
@@ -37,4 +41,10 @@ Or alternatively use MatchingStrategy in single line
 To check if all the fields have a match use modelMatcher.validate(). if an unmatched exist the org.modelmapper.ValidationException.class
 is thrown.
 
-	    
+#### Projection
+
+Projection translates information from a single object to multiple objects.
+
+In Order to allow the modelMapper library work prety fine, the names of the fields must be the same.
+
+![model Entity & Dto](assets/images/ModelMappernames.PNG)
