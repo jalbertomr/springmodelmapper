@@ -24,4 +24,23 @@ public class ModelMapperTest {
 		Assertions.assertEquals(order.getBillingAddress().getCity(), orderDto.getAddressCity());
 	}
 
+	@Test
+	public void modelMapper_map_addMappings() {
+		Order order = new Order(new Customer( new Name("Jose Alberto","Martinez")), new Address("Main Street", "CDMX"));
+		ModelMapper modelMapper = new ModelMapper();
+
+		modelMapper.typeMap(Order.class, OrderDto.class).addMappings(mapper -> {
+			mapper.map( src -> order.getCustomer().getName().getFirstName(), OrderDto::setCustomerAlternateFirstName);
+			mapper.map( src -> order.getBillingAddress().getStreet(), OrderDto::setAddressAlternateStreet);
+		});
+
+		OrderDto orderDto = modelMapper.map(order, OrderDto.class);
+
+		Assertions.assertEquals(order.getCustomer().getName().getFirstName(), orderDto.getCustomerFirstName());
+		Assertions.assertEquals(order.getCustomer().getName().getLastName(), orderDto.getCustomerLastName());
+		Assertions.assertEquals(order.getBillingAddress().getStreet(), orderDto.getAddressStreet());
+		Assertions.assertEquals(order.getBillingAddress().getCity(), orderDto.getAddressCity());
+		Assertions.assertEquals(order.getCustomer().getName().getFirstName(), orderDto.getCustomerAlternateFirstName());
+		Assertions.assertEquals(order.getBillingAddress().getStreet(), orderDto.getAddressAlternateStreet());
+	}
 }

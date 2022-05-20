@@ -17,6 +17,17 @@ The JUnit test are as follow
   [@Test](src/test/java/com.bext.spring/ModelMapperTest.java)
     
 
-###### ModelMapper.map(source, destine).addMappings(...)
+###### ModelMapper.typeMap(source class, destination class).addMappings(...)
 
 ![model Entity & Dto](assets/images/ModelMapper_map_addMappings.PNG)
+
+To add additional mapping to another fields use
+
+		modelMapper.typeMap(Order.class, OrderDto.class).addMappings(mapper -> {
+			mapper.map( src -> order.getCustomer().getName().getFirstName(), OrderDto::setCustomerAlternateFirstName);
+			mapper.map( src -> order.getBillingAddress().getStreet(), OrderDto::setAddressAlternateStreet);
+		});
+		
+Or alternatively use a single line
+
+	    modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);		
