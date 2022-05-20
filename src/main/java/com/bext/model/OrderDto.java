@@ -13,5 +13,5 @@ public class OrderDto {
 	private String addressStreet;
 	private String addressCity;
 	private String customerAlternateFirstName;
-	public String addressAlternateStreet;
+	private String addressAlternateStreet;
 }

@@ -39,7 +39,8 @@ public class SpringmodelmapperApplication implements CommandLineRunner {
 			@Override
 			protected void configure() {
 				map().setCustomerAlternateFirstName( source.getCustomer().getName().getFirstName());
-				map(source.getBillingAddress().getStreet(), destination.addressAlternateStreet);
+				map().setAddressAlternateStreet( source.getBillingAddress().getStreet());
+				//map(source.getBillingAddress().getStreet(), destination.addressAlternateStreet);
 			}
 		};
 
