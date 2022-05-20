@@ -1,6 +1,7 @@
 package com.bext.spring;
 
 import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
 import org.modelmapper.TypeMap;
 import org.modelmapper.convention.MatchingStrategies;
 import org.modelmapper.spi.MatchingStrategy;
@@ -34,15 +35,15 @@ public class SpringmodelmapperApplication implements CommandLineRunner {
 			mapper.map( src -> order.getBillingAddress().getStreet(), OrderDto::setAddressAlternateStreet);
 		});*/
 
-        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
+		PropertyMap<Order, OrderDto> orderCustomerMap = new PropertyMap<Order, OrderDto>() {
+			@Override
+			protected void configure() {
+				map().setCustomerAlternateFirstName( source.getCustomer().getName().getFirstName());
+				map(source.getBillingAddress().getStreet(), destination.addressAlternateStreet);
+			}
+		};
 
-		modelMapper.createTypeMap(Order.class, OrderDto.class);
-		modelMapper.validate();
-		try {
-			modelMapper.validate();
-		} catch (RuntimeException ex) {
-			log.info("Catched Exception: [{}]", ex.getMessage());
-		}
+		modelMapper.addMappings(orderCustomerMap);
 
 		OrderDto orderDto = modelMapper.map(order, OrderDto.class);
 		log.info("orderDto mapped: {}",orderDto);
