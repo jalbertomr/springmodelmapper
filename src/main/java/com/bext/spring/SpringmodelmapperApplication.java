@@ -28,10 +28,12 @@ public class SpringmodelmapperApplication implements CommandLineRunner {
 		Order order = new Order(new Customer( new Name("Jose Alberto", "Martinez")), new Address("Main Street","CDMX"));
 		ModelMapper modelMapper = new ModelMapper();
 
-		modelMapper.typeMap(Order.class, OrderDto.class).addMappings(mapper -> {
+		/*modelMapper.typeMap(Order.class, OrderDto.class).addMappings(mapper -> {
 			mapper.map( src -> order.getCustomer().getName().getFirstName(), OrderDto::setCustomerAlternateFirstName);
 			mapper.map( src -> order.getBillingAddress().getStreet(), OrderDto::setAddressAlternateStreet);
-		});
+		});*/
+
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
 
 		OrderDto orderDto = modelMapper.map(order, OrderDto.class);
 		log.info("orderDto mapped: {}",orderDto);

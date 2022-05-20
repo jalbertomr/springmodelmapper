@@ -28,6 +28,6 @@ To add additional mapping to another fields use
 			mapper.map( src -> order.getBillingAddress().getStreet(), OrderDto::setAddressAlternateStreet);
 		});
 		
-Or alternatively use a single line
+Or alternatively use MatchingStrategy in single line
 
 	    modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);		
